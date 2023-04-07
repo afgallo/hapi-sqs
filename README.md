@@ -42,7 +42,7 @@ The plugin will create an instance of `QueueAdapter` using the provided options 
 You can pass the following options when registering the plugin:
 
 `region` (required) - The AWS region for your SQS resources (e.g., 'us-east-1'). Defaults to `us-east-1`.
-`sqsClient` (optional) - An instance of the AWS SQS client.
+`sqsClient` (optional) - An instance of the AWS SQS client. Defaults to the `SQSClient` from AWS SDK.
 
 Example:
 ```javascript
@@ -63,8 +63,11 @@ The plugin exposes the following methods:
 Sends a message to the specified SQS queue.
 
 `queueUrl` (required) - The URL of the target SQS queue.
+
 `message` (required) - The message to send.
+
 `options` (optional) - An object containing additional options for the SendMessageCommand.
+
 Returns a Promise that resolves with the SendMessageCommand response.
 
 `receive(queueUrl, options)`
@@ -72,7 +75,9 @@ Returns a Promise that resolves with the SendMessageCommand response.
 Receives messages from the specified SQS queue.
 
 `queueUrl` (required) - The URL of the target SQS queue.
+
 `options` (optional) - An object containing additional options for the ReceiveMessageCommand.
+
 Returns a Promise that resolves with the ReceiveMessageCommand response.
 
 ## Example
@@ -95,6 +100,7 @@ server.route({
   },
 });
 
+// Not a realistic example as receiving messages will probably be done in a background worker
 server.route({
   method: 'GET',
   path: '/receive',
