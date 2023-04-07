@@ -1,5 +1,5 @@
 # hapi-sqs
-[CI](https://github.com/afgallo/hapi-sqs/actions/workflows/main.yml/badge.svg?branch=main)
+![workflow](https://github.com/afgallo/hapi-sqs/actions/workflows/main.yml/badge.svg)
 
 This Hapi plugin simplifies interaction with Amazon Simple Queue Service (SQS) by providing a convenient way to use the AWS SDK for JavaScript (v3) with Hapi.js applications.
 
@@ -43,8 +43,11 @@ The plugin will create an instance of `QueueAdapter` using the provided options 
 You can pass the following options when registering the plugin:
 
 `region` (required) - The AWS region for your SQS resources (e.g., 'us-east-1'). Defaults to `us-east-1`.
+
 `sqsClient` (optional) - An instance of the AWS SQS client. Defaults to the `SQSClient` from AWS SDK.
+
 `awsAccessKey` (optional) - Your AWS access key id.
+
 `awsSecretKey` (optional) - Your AWS secret key.
 
 Example:
@@ -71,9 +74,9 @@ Sends a message to the specified SQS queue.
 
 `message` (required) - The message to send.
 
-`options` (optional) - An object containing additional options for the SendMessageCommand.
+`options` (optional) - An object containing additional options for the `SendMessageCommand`.
 
-Returns a Promise that resolves with the SendMessageCommand response.
+Returns a Promise that resolves with the `SendMessageCommand` response.
 
 `receive(queueUrl, options)`
 
@@ -81,9 +84,9 @@ Receives messages from the specified SQS queue.
 
 `queueUrl` (required) - The URL of the target SQS queue.
 
-`options` (optional) - An object containing additional options for the ReceiveMessageCommand.
+`options` (optional) - An object containing additional options for the `ReceiveMessageCommand`.
 
-Returns a Promise that resolves with the ReceiveMessageCommand response.
+Returns a Promise that resolves with the `ReceiveMessageCommand` response.
 
 ## Example
 Here's an example of how to use the plugin in your Hapi routes:
