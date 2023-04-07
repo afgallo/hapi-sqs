@@ -30,18 +30,35 @@ describe('QueueAdapter', () => {
     expect(newQueueAdapter).to.be.an.instanceof(QueueAdapter)
   })
 
+  it('creates a new SQSClient with custom AWS access and secret keys', () => {
+    const customQueueAdapter = new QueueAdapter({
+      awsAccessKey: 'custom_access_key',
+      awsSecretKey: 'custom_secret_key'
+    })
+
+    expect(customQueueAdapter).to.be.an.instanceof(QueueAdapter)
+  })
+
+  it('creates a new SQSClient and ignores AWS access and secret keys', () => {
+    const customQueueAdapter = new QueueAdapter({
+      awsAccessKey: 'custom_access_key'
+    })
+
+    expect(customQueueAdapter).to.be.an.instanceof(QueueAdapter)
+  })
+
   it('sends a message to the queue', async () => {
     const queueUrl = 'https://sqs.us-east-1.amazonaws.com/123456789012/MyQueue'
-    const messageBody = 'Hello, world!'
+    const message = 'Hello, world!'
     const sendMessageResponse = { MessageId: '12345' }
 
     sendStub.withArgs(Sinon.match.instanceOf(SendMessageCommand)).resolves(sendMessageResponse)
 
-    const response = await queueAdapter.send(queueUrl, messageBody)
+    const response = await queueAdapter.send(queueUrl, message)
 
     expect(response).to.equal(sendMessageResponse)
     Sinon.assert.calledWithMatch(sendStub, Sinon.match.instanceOf(SendMessageCommand))
-    Sinon.assert.calledWithMatch(sendStub, Sinon.match.has('input', { QueueUrl: queueUrl, MessageBody: messageBody }))
+    Sinon.assert.calledWithMatch(sendStub, Sinon.match.has('input', { QueueUrl: queueUrl, MessageBody: message }))
   })
 
   it('receives messages from the queue', async () => {
@@ -56,5 +73,23 @@ describe('QueueAdapter', () => {
     expect(response).to.equal(receiveMessageResponse)
     Sinon.assert.calledWithMatch(sendStub, Sinon.match.instanceOf(ReceiveMessageCommand))
     Sinon.assert.calledWithMatch(sendStub, Sinon.match.has('input', { QueueUrl: queueUrl, ...options }))
+  })
+
+  it('sends a message with additional options', async () => {
+    const queueUrl = 'https://sqs.us-east-1.amazonaws.com/123456789012/MyQueue'
+    const message = 'Hello, world!'
+    const options = { MessageGroupId: 'test-group' }
+
+    sendStub.resolves('send result')
+
+    const result = await queueAdapter.send(queueUrl, message, options)
+
+    expect(result).to.equal('send result')
+
+    Sinon.assert.calledOnceWithExactly(sendStub, Sinon.match.instanceOf(SendMessageCommand))
+    Sinon.assert.calledWithMatch(
+      sendStub,
+      Sinon.match.has('input', { QueueUrl: queueUrl, MessageBody: message, ...options })
+    )
   })
 })

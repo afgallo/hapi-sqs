@@ -1,4 +1,5 @@
 # hapi-sqs
+[CI](https://github.com/afgallo/hapi-sqs/actions/workflows/main.yml/badge.svg?branch=main)
 
 This Hapi plugin simplifies interaction with Amazon Simple Queue Service (SQS) by providing a convenient way to use the AWS SDK for JavaScript (v3) with Hapi.js applications.
 
@@ -17,7 +18,7 @@ const Hapi = require('@hapi/hapi');
 const SQSPlugin = require('hapi-sqs');
 
 const init = async () => {
-  const server = new Hapi.server({
+  const server = Hapi.server({
     port: 3000,
     host: 'localhost',
   });
@@ -26,7 +27,7 @@ const init = async () => {
     plugin: SQSPlugin,
     options: {
       region: 'us-east-1', // Replace with your desired AWS region
-    },
+    }
   });
 
   // Add routes, start server, etc.
@@ -43,6 +44,8 @@ You can pass the following options when registering the plugin:
 
 `region` (required) - The AWS region for your SQS resources (e.g., 'us-east-1'). Defaults to `us-east-1`.
 `sqsClient` (optional) - An instance of the AWS SQS client. Defaults to the `SQSClient` from AWS SDK.
+`awsAccessKey` (optional) - Your AWS access key id.
+`awsSecretKey` (optional) - Your AWS secret key.
 
 Example:
 ```javascript
@@ -51,7 +54,9 @@ await server.register({
   options: {
     region: 'us-east-1',
     sqsClient: customSQSClient,
-  },
+    awsAccessKey: 'your_access_key',
+    awsSecretKey: 'your_secret_key'
+  }
 });
 ```
 
@@ -90,9 +95,10 @@ server.route({
   handler: async (request, h) => {
     const queueUrl = 'https://sqs.us-east-1.amazonaws.com/123456789012/MyQueue';
     const message = 'Hello, world!';
+    const options = { MessageGroupId: 'test-group' };
 
     try {
-      const response = await h.sqs.send(queueUrl, message);
+      const response = await h.sqs.send(queueUrl, message, options);
       return h.response(response).code(200);
     } catch (error) {
       return h.response(error).code(500);
