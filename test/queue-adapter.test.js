@@ -22,6 +22,14 @@ describe('QueueAdapter', () => {
     sendStub.restore()
   })
 
+  it('creates a new SQSClient if not provided as an option', () => {
+    let newQueueAdapter = new QueueAdapter()
+    expect(newQueueAdapter).to.be.an.instanceof(QueueAdapter) // any assert will do as sqsClient is a private variable
+
+    newQueueAdapter = new QueueAdapter({ region: 'ap-southeast-1' })
+    expect(newQueueAdapter).to.be.an.instanceof(QueueAdapter)
+  })
+
   it('sends a message to the queue', async () => {
     const queueUrl = 'https://sqs.us-east-1.amazonaws.com/123456789012/MyQueue'
     const messageBody = 'Hello, world!'
