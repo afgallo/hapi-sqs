@@ -11,6 +11,7 @@
   },
   "scripts": {
     "test": "lab -a @hapi/code -L -l -t 100",
+    "test:ci": "lab -a @hapi/code -L -l -t 100 -r lcov -o lcov.info",
     "lint": "eslint ."
   },
   "dependencies": {
