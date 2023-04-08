@@ -64,7 +64,7 @@ await server.register({
 ```
 
 ## API
-The plugin exposes the following methods:
+The plugin exposes the following method:
 
 `send(queueUrl, message, options)`
 
@@ -77,16 +77,6 @@ Sends a message to the specified SQS queue.
 `options` (optional) - An object containing additional options for the `SendMessageCommand`.
 
 Returns a Promise that resolves with the `SendMessageCommand` response.
-
-`receive(queueUrl, options)`
-
-Receives messages from the specified SQS queue.
-
-`queueUrl` (required) - The URL of the target SQS queue.
-
-`options` (optional) - An object containing additional options for the `ReceiveMessageCommand`.
-
-Returns a Promise that resolves with the `ReceiveMessageCommand` response.
 
 ## Example
 Here's an example of how to use the plugin in your Hapi routes:
@@ -102,22 +92,6 @@ server.route({
 
     try {
       const response = await h.sqs.send(queueUrl, message, options);
-      return h.response(response).code(200);
-    } catch (error) {
-      return h.response(error).code(500);
-    }
-  },
-});
-
-// Not a realistic example as receiving messages will probably be done in a background worker
-server.route({
-  method: 'GET',
-  path: '/receive',
-  handler: async (request, h) => {
-    const queueUrl = 'https://sqs.us-east-1.amazonaws.com/123456789012/MyQueue';
-
-    try {
-      const response = await h.sqs.receive(queueUrl, { MaxNumberOfMessages: 1 });
       return h.response(response).code(200);
     } catch (error) {
       return h.response(error).code(500);
