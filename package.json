@@ -29,6 +29,10 @@
     "prettier": "2.x.x",
     "sinon": "15.x.x"
   },
+  "peerDependencies": {
+    "@aws-sdk/client-sqs": "3.x.x",
+    "@hapi/hapi": "21.x.x"
+  },
   "keywords": [
     "hapi",
     "sqs",
