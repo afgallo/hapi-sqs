@@ -1,5 +1,6 @@
 # hapi-sqs
 ![workflow](https://github.com/afgallo/hapi-sqs/actions/workflows/main.yml/badge.svg)
+[![codecov](https://codecov.io/gh/afgallo/hapi-sqs/branch/main/graph/badge.svg?token=19Y3ZLIDZF)](https://codecov.io/gh/afgallo/hapi-sqs)
 
 This Hapi plugin simplifies interaction with Amazon Simple Queue Service (SQS) by providing a convenient way to use the AWS SDK for JavaScript (v3) with Hapi.js applications.
 
