@@ -78,4 +78,38 @@ describe('QueueAdapter', () => {
       Sinon.match.has('input', { QueueUrl: queueUrl, MessageBody: message, ...options })
     )
   })
+
+  it('throws an error if message is not provided', async () => {
+    try {
+      await queueAdapter.send('queueUrl', null)
+      expect.fail('Expected error to be thrown')
+    } catch (error) {
+      expect(error.message).to.equal('queueUrl and message are required parameters')
+    }
+
+    try {
+      await queueAdapter.send(null, 'message')
+      expect.fail('Expected error to be thrown')
+    } catch (error) {
+      expect(error.message).to.equal('queueUrl and message are required parameters')
+    }
+  })
+
+  it('catches and rethrows errors from sqsClient.send', async () => {
+    const error = new Error('send failed')
+    sendStub.rejects(error)
+
+    const consoleErrorStub = Sinon.stub(console, 'error')
+
+    try {
+      await queueAdapter.send('queueUrl', 'message')
+      expect.fail('Expected error to be thrown')
+    } catch (caughtError) {
+      expect(caughtError).to.equal(error)
+    } finally {
+      consoleErrorStub.restore()
+    }
+
+    Sinon.assert.calledOnceWithExactly(consoleErrorStub, 'Failed to send message', error)
+  })
 })
