@@ -1,6 +1,6 @@
 {
   "name": "hapi-sqs",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "A hapi plugin that exposes a sqs queue to your hapi toolkit",
   "author": "Andre Gallo <afgallo@gmail.com>",
   "license": "MIT",
