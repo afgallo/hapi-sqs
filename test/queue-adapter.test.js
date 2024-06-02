@@ -112,4 +112,18 @@ describe('QueueAdapter', () => {
 
     Sinon.assert.calledOnceWithExactly(consoleErrorStub, 'Failed to send message', error)
   })
+
+  it('creates a new QueueAdapter with a custom endpoint', async () => {
+    const endpoint = 'http://localhost:4575' // LocalStack SNS endpoint for local testing
+    const customQueueAdapter = new QueueAdapter({ endpoint })
+
+    expect(customQueueAdapter).to.exist()
+    expect(customQueueAdapter).to.be.an.instanceof(QueueAdapter)
+
+    const client = customQueueAdapter.getSQSClient
+    const actualEndpoint = await client.config.endpoint()
+
+    expect(actualEndpoint.hostname).to.equal('localhost')
+    expect(actualEndpoint.port).to.equal(4575)
+  })
 })
