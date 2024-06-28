@@ -15,7 +15,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@aws-sdk/client-sqs": "3.590.0"
+    "@aws-sdk/client-sqs": "3.592.0"
   },
   "devDependencies": {
     "@hapi/code": "9.x.x",
